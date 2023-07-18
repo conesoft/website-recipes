@@ -1,0 +1,103 @@
+﻿@page
+@model RecipeCollector.Pages.IndexModel
+@using Microsoft.AspNetCore.Http.Extensions
+@using Humanizer
+@using System.Web
+
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/site.webmanifest">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Recipes">
+    <meta name="application-name" content="Recipes">
+    <meta name="theme-color" content="#000000">
+
+    <title>Recipes</title>
+
+    <link rel="stylesheet" href=~/reset/helper.css?@Random.Shared.Next(10000, 99999) />
+    <link rel="stylesheet" href=~/site.min.css?@Random.Shared.Next(10000, 99999) />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Recipes</h1>
+    @if (User?.Identity?.IsAuthenticated != true)
+    {
+        <form class='user ui' method=post action=/user/login>
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <input type="hidden" name="redirectto" value="/">
+            <input type="submit" value="login">
+        </form>
+    }
+    else
+    {
+        <form class='user ui' method=post action=/user/logout>
+            <h2>@User.Identity.Name</h2>
+            <input type="hidden" name="redirectto" value="/">
+            <input type="submit" value="logout">
+        </form>
+
+        <form class='addrecipe ui' method=post action=/addrecipe>
+            <input type=text size=1 name=recipe-url placeholder='recipe url'>
+            <input type=hidden name=user value=@User.Identity.Name>
+            <input type=submit value=add>
+        </form>
+    }
+
+    <section class='recipes'>
+        @foreach (var recipe in Model.Recipes)
+        {
+            <a class='recipe' href='@recipe.Url' target="_blank" style="background-image: url('/image/@HttpUtility.UrlEncode(recipe.Title)')">
+                <footer>
+                    <h3>@recipe.Title</h3>
+                    <aside>added by <b>@recipe.AddedBy</b></aside>
+
+                    @if (recipe.MadeAt.Length > 1)
+                    {
+                        var date = recipe.MadeAt.Max();
+                        <p>already cooked @recipe.MadeAt.Length times, last time @(date.Day == DateTime.Today.Day ? "today" : date.Date.Humanize())</p>
+                    }
+                    else if (recipe.MadeAt.Length == 1)
+                    {
+                        var date = recipe.MadeAt.Max();
+                        <p>already cooked once @(date.Day == DateTime.Today.Day ? "today" : date.Date.Humanize())</p>
+                    }
+                    else
+                    {
+                        <p>never cooked so far</p>
+                    }
+
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <section class='ui'>
+                            <h4>add</h4>
+                            <form method=post action=/addtimestamp>
+                                <input type=hidden name=recipe-title value='@recipe.Title'>
+                                <input type=hidden name=days-ago value=0>
+                                <input type=submit value='today'>
+                            </form>
+                            <form method=post action=/addtimestamp>
+                                <input type=hidden name=recipe-title value='@recipe.Title'>
+                                <input type=hidden name=days-ago value=1>
+                                <input type=submit value='yesterday'>
+                            </form>
+                        </section>
+                    }
+                </footer>
+            </a>
+        }
+    </section>
+
+    <footer>
+        <p>&copy; 2021
+        <p>written by <a href="https://davepermen.net">davepermen</a>
+        <p>a <a href="https://conesoft.net">conesoft product</a>
+    </footer>
+</body>
+</html>

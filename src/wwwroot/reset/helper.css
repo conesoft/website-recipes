@@ -1,0 +1,15 @@
+﻿:root {
+    /* Thanks Lea Verou! */
+    --ON: initial;
+    --OFF: ;
+    --light: var(--ON);
+    --dark: var(--OFF);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --light: var(--OFF);
+        --dark: var(--ON);
+    }
+}

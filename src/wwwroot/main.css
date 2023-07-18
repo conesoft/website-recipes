@@ -1,0 +1,39 @@
+html {
+    background: white;
+    color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+    }
+
+    html {
+        background: black;
+        color: white;
+    }
+
+    *::placeholder {
+        color: white;
+        opacity: 0.6;
+        font-style: italic;
+        font-weight: 100;
+    }
+}
+
+
+html {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 100;
+    font-size: 1.5rem;
+}
+
+@media (min-aspect-ratio: 1/1) {
+    body {
+        padding: 0 5rem;
+    }
+}
+
+input, button {
+    font-weight: 500;
+}

@@ -1,0 +1,1 @@
+﻿public record Recipe(string Title, string Url, string AddedBy, string? Image, DateTime[] MadeAt);

@@ -1,0 +1,42 @@
+﻿/* reset */
+
+* {
+    all: unset;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    word-wrap: break-word;
+}
+
+    *:not(head, style, script) {
+        display: grid;
+        place-content: stretch;
+        place-items: stretch;
+        width: 100%;
+    }
+
+    head, style, script {
+        display: none;
+    }
+
+
+input, button {
+    background: #80808020;
+    cursor: pointer;
+}
+
+    input[type=text], input[type=password] {
+        cursor: text;
+    }
+
+    input:hover, button:hover {
+        background: #80808040;
+    }
+
+a:hover {
+    cursor: pointer;
+}
+
+aside, b, i {
+    display: inline;
+}
